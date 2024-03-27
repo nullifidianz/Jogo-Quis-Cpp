@@ -1,6 +1,8 @@
 #include <Arduino.h>;
 #include <LiquidCrystal.h>;
 
+LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
+
 const int btnSim = 2;
 const int btnNão = 3;
 const int btnPular = 4;
@@ -9,8 +11,6 @@ const int btnIniciar = 5;
 const int ledV = 6;
 
 const int buzzer = 7;
-
-LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
 
 int nivelAtual = 1;
 int pontos = 0;
@@ -105,5 +105,17 @@ void tocaSom(int tipoSom)
     // Vitória
     tone(buzzer, 1500, 200);
     break;
+  }
+}
+
+bool verificarResposta(bool respostaUsuario, bool respostaCorreta)
+{
+  if (respostaUsuario == respostaCorreta)
+  {
+    return true;
+  }
+  else
+  {
+    false;
   }
 }
