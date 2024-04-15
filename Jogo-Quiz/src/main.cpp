@@ -5,7 +5,7 @@ boolean jogoRodando = false;
 boolean inicioClicado = false;
 boolean perguntaRespondida = false;
 
-String Questions[] = {
+String Questions[] = { // perguntas 
     "Neymar jogou no PSG?",
     "Messi eh argentino?",
     "CR7 eh portugues?",
@@ -26,8 +26,8 @@ String Questions[] = {
     "O Boca ganhou Libertadores?"
 };
 
-int NumQuestions = 0;
-boolean respostas[] = {
+int NumQuestions = 0; // contador para percorrer o array perguntas
+boolean respostas[] = { // repostas
   true, 
   true, 
   true, 
@@ -46,8 +46,8 @@ boolean respostas[] = {
   false,
   false,
   true
-};    //1 correto - 0 errado
-int pontos[] = {
+};    //true sim - false nao
+int pontos[] = { // pontos por cada questao (1 ponto = questao facil; 2 pontos = questao media; 3 pontos = questao dificil
   1, 
   1, 
   1,
@@ -67,11 +67,11 @@ int pontos[] = {
   3,
   3
 };
-int perguntasSelecDificuldades[3] = {0, 0, 0};
-int perguntas[15];
-int score = 0;
-int pulos = 3;
-int segundos = 0;
+int perguntasSelecDificuldades[3] = {0, 0, 0}; // array que guarda quantas perguntas de cada dificuldade foram selecionadas (da direita para esquerda: faceis, medias, dificeis)
+int perguntas[15]; // array que guarda as perguntas geradas aleatoriamente
+int score = 0; // pontuacao do jogador
+int pulos = 3; // pulos do jogador
+int segundos = 0; // inteiro que armazena o tempo das questoes
 int milisegundos = 0;
 int centesimos = 0;
 boolean pularClicado = false;
@@ -250,31 +250,31 @@ void showScore()
 
 void escolherPerguntas() {
   for (int i=0; i<15; i++) {
-    int pergunta = random(0,18);
+    int pergunta = random(0,18); // numero gerado aleatoriamente de 0 a 17 
     boolean existe = false;
     for (int j=0; j<15; j++) {
-      if (perguntas[j] == pergunta) {
+      if (perguntas[j] == pergunta) { // percorre o array de perguntas para verificar se a pergunta ja foi sorteada anteriormente
         existe = true;
         break;
       }
     }
 
     if (existe) {
-      i--;
+      i--; // garante mais uma iteração do laço, gerando novo numero random
     }
-    else if (perguntasSelecDificuldades[pontos[pergunta]-1] == 5){
-      i--; 
+    else if (perguntasSelecDificuldades[pontos[pergunta]-1] == 5){ // caso o numero de perguntas selecionadas dessa dificuldade seja 5, ela nao pode ser selecionada
+      i--; // garante mais uma iteração do laço, gerando novo numero random
     }
     else
     {
       perguntasSelecDificuldades[pontos[pergunta]-1]++;
-      perguntas[i] = pergunta;
+      perguntas[i] = pergunta; // caso a pergunta nao tenha sido sorteada e as perguntas sorteadas até aqui não tenham completado 5 dessa dificuldade, incluir no array
     }
   }
 }
 
 void exibirPergunta(boolean zerarSegundos) {
-  if (NumQuestions < 15) {
+  if (NumQuestions < 15) { // caso as perguntas nao tenham sido respondidas ainda
     lcd.setCursor(0, 0);
     lcd.print(F("Questao "));
     if (NumQuestions < 9) {
@@ -294,7 +294,7 @@ void exibirPergunta(boolean zerarSegundos) {
     }  
     delay(1000);
   }
-  else {
+  else { // caso as perguntas tenham sido respondidas, exibir a pergunta final.
     lcd.setCursor(0, 0);
     lcd.print(F("Questao Final:"));
     delay(1000);
@@ -328,7 +328,7 @@ void exibirPergunta(boolean zerarSegundos) {
   perguntaRespondida = false;
 }
 
-void cronometro(){
+void cronometro(){ // funcao que controla os segundos das perguntas
   milisegundos = millis ();
   if(milisegundos % 10 == 0){
     centesimos++;
@@ -367,7 +367,7 @@ void cronometro(){
 }
 
 // PINO 8 = SIM; PINO 9 = NAO
-void checkButtons() {
+void checkButtons() { // funcao que controla o clique dos botoes sim e nao
   if (digitalRead(8) == HIGH || digitalRead(9) == HIGH) {
     if (NumQuestions < 15) {
       if (digitalRead(8) == HIGH && respostas[perguntas[NumQuestions]]) {
